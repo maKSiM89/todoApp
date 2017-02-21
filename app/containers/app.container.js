@@ -1,17 +1,19 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {TodoActions} from '../actions';
-import {TodoList} from '../components';
-import {bindActionCreators} from 'redux';
 
-const mapStateToProps = (state) => ({
-    todos: state.todos
-});
+class AppContainer extends React.Component {
+    constructor(props) {
+        super(props);
+    }
 
-const mapDispatchToProps = (dispatch) => ({
-   actions: bindActionCreators(TodoActions, dispatch)
-});
+    render() {
+        const children = this.props.children;
 
-const AppContainer = connect(mapStateToProps, mapDispatchToProps)(TodoList);
+        return (
+            <div className="main">
+                {children}
+            </div>
+        );
+    }
+}
 
 export default AppContainer;

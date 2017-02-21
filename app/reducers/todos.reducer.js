@@ -20,7 +20,6 @@ const todos = (state = [], action) => {
             break;
         case actions.TOGGLE_TODO_ITEM:
             nextState = state.map((todo, index) => {
-                console.log( index );
                 if (action.index === index) {
                     return Object.assign({}, todo, {completed: !todo.completed})
                 }

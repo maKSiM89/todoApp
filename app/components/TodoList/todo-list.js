@@ -1,12 +1,15 @@
 import React from 'react';
-import TodoItem from './TodoItem';
-import firebase from 'firebase';
+import TodoItem from '../TodoItem/todo-item';
+import {connect} from 'react-redux';
+import {firebase as FirebaseTools, helpers} from 'redux-react-firebase';
 
 import Container from 'muicss/lib/react/container';
 import Appbar from 'muicss/lib/react/appbar';
 import Form from 'muicss/lib/react/form';
 import Input from 'muicss/lib/react/input';
 import Button from 'muicss/lib/react/button';
+
+const {dataToJS, isLoaded} = helpers;
 
 class TodoList extends React.Component {
     constructor(props) {
@@ -18,15 +21,6 @@ class TodoList extends React.Component {
         this.handleChangeInput = this.handleChangeInput.bind(this);
         this.renderTodoList = this.renderTodoList.bind(this);
         this.handleAddClick = this.handleAddClick.bind(this);
-    }
-
-    componentWillMount() {
-        //var firebaseRef = firebase.database();
-    }
-
-    componentWillUnmount() {
-        /*this.unbind('todos');
-        this.firebaseRef.off();*/
     }
 
     render() {
@@ -67,32 +61,48 @@ class TodoList extends React.Component {
     }
 
     renderTodoList() {
-        return this.props.todos.map((item, index) => {
-            return (
-                <TodoItem
-                    toggle={() => this.toggle(index)}
-                    remove={() => this.remove(index)}
-                    item={item}
-                    key={index}
-                />
-            );
-        });
+        let todos = this.props.todos;
+
+        if (typeof todos === 'undefined') {
+            return null;
+        } else {
+            return this.props.todos.map((item, index) => {
+                return (
+                    <TodoItem
+                        toggle={() => this.toggle(index)}
+                        remove={() => this.remove(index)}
+                        item={item}
+                        key={index}
+                    />
+                );
+            });
+        }
     }
 
     remove(index) {
-        this.props.actions.removeTodoItem(index);
+        const actions = this.props.actions;
+        actions.removeTodoItem(index);
     }
 
     toggle(index) {
         this.props.actions.toggleTodoItem(index);
     }
 
+    add(text) {
+        const firebase = this.props.firebase;
+        this.props.actions.addTodoItem(text);
+
+        /*firebase.push('/todos', {
+            text,
+            completed: false
+        });*/
+    }
+
     handleAddClick(e) {
         e.preventDefault();
+
         if (this.state.inputText.length > 0) {
-
-            this.props.actions.addTodoItem(this.state.inputText);
-
+            this.add(this.state.inputText);
 
             this.setState({
                 inputText: ''

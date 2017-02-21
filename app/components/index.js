@@ -1,4 +1,9 @@
-import TodoItem from './TodoItem';
-import TodoList from './TodoList';
+import TodoItem from './TodoItem/todo-item';
+import TodoList from './TodoList/todo-list';
+import {Admin} from './Admin';
 
-export {TodoItem, TodoList};
+export {
+	Admin,
+	TodoItem,
+	TodoList
+};
