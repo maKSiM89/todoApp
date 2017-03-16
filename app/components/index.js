@@ -1,9 +1,7 @@
-import TodoItem from './TodoItem/todo-item';
-import TodoList from './TodoList/todo-list';
-import {Admin} from './Admin';
+import TodoItem from './todo-item';
+import TodoList from './todo-list';
 
 export {
-	Admin,
 	TodoItem,
 	TodoList
 };

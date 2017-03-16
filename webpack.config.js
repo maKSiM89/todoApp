@@ -1,54 +1,85 @@
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const path = require('path');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-const ASSET_PATH = process.env.ASSET_PATH || '/';
+const ExtractTextPluginVendor = new ExtractTextPlugin('./css/vendor.css');
+const ExtractTextPluginStyles = new ExtractTextPlugin('./css/styles.css');
 
 module.exports = {
-	entry: {
-		bundle: "./app/index.js",
-		vendor: "./assets/css/vendor/index.js"
-	},
+    entry: [
+        './app/index.js'
+    ],
 
-	output: {
-		filename: '[name].js',
-		path: path.resolve(__dirname, 'public'),
-		publicPath: ASSET_PATH
-	},
+    output: {
+        path: __dirname + '/build',
+        filename: 'js/app.js',
+        publicPath: ''
+    },
 
-	devtool: "cheap-module-inline-source-map",
-
-	module: {
-		loaders: [{
-				test: /\.jsx?$/,
-				exclude: getExcludedModules(),
-				loader: 'babel-loader',
-				query: {
-					presets: ['react', 'es2015']
-				}
-			}, {
-                test: /\.css$/,
-                loader: ExtractTextPlugin.extract({
-                	use: 'css-loader'
+    module: {
+        loaders: [
+            {
+                test: /\.(js|jsx)$/,
+                exclude: /node_modules/,
+                loaders: ['babel-loader']
+            }, {
+                test: /\.(js|jsx)$/,
+                loaders: ['babel-loader']
+            }, {
+                test: /^((?!.min).)*\.css$/,
+                loader: ExtractTextPluginStyles.extract({
+                	use: [{
+                	    loader: 'css-loader'
+                    }, {
+                	    loader: 'postcss-loader',
+                        options: {
+                            plugins: function () {
+                                return [
+                                    require('autoprefixer')
+                                ];
+                            }
+                        }
+                    }]
                 })
             }, {
                 test: /\.scss$/,
-                loader: ExtractTextPlugin.extract({
-                	use: 'css-loader!sass-loader'
+                loader: ExtractTextPluginStyles.extract({
+                	use: [{
+                	    loader: 'css-loader'
+                    }, {
+                	    loader: 'postcss-loader',
+                        options: {
+                            plugins: function () {
+                                return [
+                                    require('autoprefixer')
+                                ];
+                            }
+                        }
+                    },{
+                	    loader: 'sass-loader'
+                    }]
+                })
+            }, {
+                test: /\.min.css$/,
+                loader: ExtractTextPluginVendor.extract({
+                	use: [{
+                	    loader: 'css-loader'
+                    }]
                 })
             }
-		]
-	},
+        ]
+    },
 
-	plugins: [
-		new ExtractTextPlugin('[name].css'),
-		// This makes it possible for us to safely use env vars on our code
-	    new webpack.DefinePlugin({
-	      'process.env.ASSET_PATH': JSON.stringify(ASSET_PATH)
-	    })
-	]
+    resolve: {
+        extensions: ['.js', '.jsx']
+    },
+
+    plugins: [
+        ExtractTextPluginVendor,
+        ExtractTextPluginStyles,
+        new HtmlWebpackPlugin({
+            template: __dirname + '/app/index.html',
+            inject: 'body'
+        })
+    ]
 };
-
-function getExcludedModules() {
-	return [/(node_modules)/];
-}

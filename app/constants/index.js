@@ -1,3 +1,3 @@
-import {ADD_TODO_ITEM, REMOVE_TODO_ITEM, TOGGLE_TODO_ITEM} from './action-types.constants';
+import {ADD_TODO_ITEM, REMOVE_TODO_ITEM, TOGGLE_TODO_ITEM} from './action-types';
 
 export {ADD_TODO_ITEM, REMOVE_TODO_ITEM, TOGGLE_TODO_ITEM};

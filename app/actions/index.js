@@ -1,3 +1,3 @@
-import * as TodoActions from './todo.actions';
+import * as TodoActions from './todo';
 
 export {TodoActions};

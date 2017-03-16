@@ -1,4 +1,4 @@
-import AppContainer from './app.container';
-import TodoListContainer from './todo-list.container';
+import AppContainer from './app';
+import TodoListContainer from './todo-list';
 
 export {AppContainer, TodoListContainer};

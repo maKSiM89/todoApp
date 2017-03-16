@@ -1,5 +1,4 @@
 import React from 'react';
-import Button from 'muicss/lib/react/button';
 
 class TodoItem extends React.Component {
     constructor(props) {

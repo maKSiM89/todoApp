@@ -1,15 +1,11 @@
 import React from 'react';
-import TodoItem from '../TodoItem/todo-item';
-import {connect} from 'react-redux';
-import {firebase as FirebaseTools, helpers} from 'redux-react-firebase';
+import TodoItem from '../todo-item';
 
 import Container from 'muicss/lib/react/container';
 import Appbar from 'muicss/lib/react/appbar';
 import Form from 'muicss/lib/react/form';
 import Input from 'muicss/lib/react/input';
 import Button from 'muicss/lib/react/button';
-
-const {dataToJS, isLoaded} = helpers;
 
 class TodoList extends React.Component {
     constructor(props) {
@@ -89,13 +85,7 @@ class TodoList extends React.Component {
     }
 
     add(text) {
-        const firebase = this.props.firebase;
         this.props.actions.addTodoItem(text);
-
-        /*firebase.push('/todos', {
-            text,
-            completed: false
-        });*/
     }
 
     handleAddClick(e) {

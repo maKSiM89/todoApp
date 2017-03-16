@@ -1,10 +1,8 @@
 import {combineReducers} from 'redux';
-import todos from './todos.reducer';
-import {firebaseStateReducer as firebase} from 'redux-react-firebase';
+import todos from './todos';
 
 const rootReducer = combineReducers({
-    todos,
-    firebase
+    todos
 });
 
 export default rootReducer;
